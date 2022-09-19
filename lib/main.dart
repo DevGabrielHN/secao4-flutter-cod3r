@@ -1,4 +1,8 @@
-import 'package:despesas/components/transaction_user..dart';
+import 'dart:math';
+
+import 'package:despesas/components/transaction_form.dart';
+import 'package:despesas/components/transaction_list.dart';
+import 'package:despesas/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -15,8 +19,50 @@ void main() {
   ),);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+final _transactions = [
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    ),Transaction(
+      id: 't2',
+      title: 'Conta de luz',
+      value: 210.30,
+      date: DateTime.now(),
+    ),
+  ];
+
+  _addTransaction(String title,double value){
+    final newTransaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title:  title,
+      value: value, 
+      date: DateTime.now()
+      );
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+
+  }
+  
+  _openTransactionFormModal(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTransaction);
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +72,7 @@ class MyApp extends StatelessWidget {
           actions: <Widget> [
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () => _openTransactionFormModal(context),
             ),
           ],
         ),
@@ -42,14 +88,16 @@ class MyApp extends StatelessWidget {
                   child: Text('Gráfico'),
                 ),
               ),
-             TransactionUser(),
+               // TransactionForm(_addTransaction),
+                TransactionList(transaction: _transactions),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: (){},
+          onPressed: () => _openTransactionFormModal(context),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
   }
 }

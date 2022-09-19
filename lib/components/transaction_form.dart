@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatelessWidget {
-
   final titleController = TextEditingController();
   final valueController = TextEditingController();
 
@@ -9,10 +8,9 @@ class TransactionForm extends StatelessWidget {
 
   TransactionForm(this.onSubmit);
 
-
   _submitForm(){
     final title = titleController.text;
-    final value = double.tryParse(valueController.text) ?? 0.0;
+    final value = double.tryParse(valueController.text) ?? 0;
 
     if(title.isEmpty || value <= 0){
       return;
