@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
   
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
@@ -22,20 +23,32 @@ class MyApp extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Despesas Pessoais'),
-        ),
-        body: Column (
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget> [
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text('Gráfico'),
-              ),
+          actions: <Widget> [
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {},
             ),
-           TransactionUser(),
           ],
+        ),
+        body: SingleChildScrollView(
+          child: Column (
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget> [
+              Container(
+                width: double.infinity,
+                child: Card(
+                  color: Colors.blue,
+                  child: Text('Gráfico'),
+                ),
+              ),
+             TransactionUser(),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: (){},
         ),
       );
   }
