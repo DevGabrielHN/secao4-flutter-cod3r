@@ -16,6 +16,12 @@ void main() {
       ],
       supportedLocales: [const Locale('pt', 'BR')],
     home: MyApp(),
+    theme: ThemeData().copyWith(
+      colorScheme: ThemeData().colorScheme.copyWith(
+        primary: Colors.purple,
+        secondary: Colors.amber
+      )
+    ),
   ),);
 }
 
@@ -53,6 +59,8 @@ final _transactions = [
     setState(() {
       _transactions.add(newTransaction);
     });
+
+    Navigator.of(context).pop();
 
   }
   
