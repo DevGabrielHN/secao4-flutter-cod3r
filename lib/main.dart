@@ -16,10 +16,19 @@ void main() {
       ],
       supportedLocales: [const Locale('pt', 'BR')],
     home: MyApp(),
-    theme: ThemeData().copyWith(
+    theme: ThemeData(
+      textTheme: ThemeData.light().textTheme.copyWith(
+        titleLarge: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      fontFamily: 'Quicksand'
+    ).copyWith(
       colorScheme: ThemeData().colorScheme.copyWith(
         primary: Colors.purple,
-        secondary: Colors.amber
+        secondary: Colors.amber,
       )
     ),
   ),);
