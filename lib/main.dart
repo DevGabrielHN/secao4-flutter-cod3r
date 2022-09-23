@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:despesas/components/chart.dart';
 import 'package:despesas/components/transaction_form.dart';
 import 'package:despesas/components/transaction_list.dart';
 import 'package:despesas/models/transaction.dart';
@@ -43,26 +44,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
-final _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),Transaction(
-      id: 't2',
-      title: 'Conta de luz',
-      value: 210.30,
-      date: DateTime.now(),
-    ),
-  ];
+final List<Transaction> _transactions = [];
 
-  _addTransaction(String title,double value){
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ));
+    }).toList();
+  }
+
+
+  _addTransaction(String title,double value,DateTime date){
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title:  title,
       value: value, 
-      date: DateTime.now()
+      date: date
       );
 
     setState(() {
@@ -73,13 +72,25 @@ final _transactions = [
 
   }
   
+
+  _deleteTransaction(String id){
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
+  }
+
+
+
   _openTransactionFormModal(BuildContext context){
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return TransactionForm(_addTransaction);
-      });
+          return TransactionForm(_addTransaction);
+        },
+      );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,18 +106,12 @@ final _transactions = [
         ),
         body: SingleChildScrollView(
           child: Column (
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget> [
-              Container(
-                width: double.infinity,
-                child: Card(
-                  color: Colors.blue,
-                  child: Text('Gráfico'),
-                ),
-              ),
-               // TransactionForm(_addTransaction),
-                TransactionList(transaction: _transactions),
+              Chart(recentTransaction: _recentTransactions),
+                TransactionList(
+                transaction: _transactions,
+                onRemove: _deleteTransaction),
             ],
           ),
         ),
